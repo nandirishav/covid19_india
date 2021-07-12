@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect, useMemo } from "react";
+import { Table } from "./Table";
 
 function App() {
+  const [data, setData] = useState([]);
+
+  const getCovidData = async () => {
+    const res = await fetch("https://api.covid19india.org/data.json");
+    const actualData = await res.json();
+    console.log(actualData.statewise);
+    setData(actualData.statewise);
+  };
+
+  useEffect(() => {
+    getCovidData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 style={{ textAlign: "center" }}>COVID 19 INDIA DASHBOARD</h1>
+      <Table Data={data} />
     </div>
   );
 }
